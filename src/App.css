@@ -73,3 +73,41 @@
   .header-cta { font-size: 9px; }
   .product-grid { grid-template-columns: 1fr; }
 }
+/* HMT Showroom Hero Background */
+.hero {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(6, 20, 34, 0.92) 0%,
+      rgba(6, 20, 34, 0.78) 45%,
+      rgba(6, 20, 34, 0.30) 100%
+    ),
+    url("/hero-banner.png") center / cover no-repeat !important;
+}
+
+/* Keep the existing text readable */
+.hero-copy {
+  position: relative;
+  z-index: 2;
+}
+
+/* Replace the old CSS tool illustration with the photo */
+.hero-visual {
+  display: none;
+}
+
+/* Let the existing hero content use the available space */
+.hero-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Mobile layout */
+@media (max-width: 760px) {
+  .hero {
+    background-position: 60% center !important;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+}
