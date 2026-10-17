@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 const WHATSAPP_NUMBER = "971554383949";
+
+const heroSlides = [
+  "/hero-banner.png",
+  "/herobanner1.png",
+  "/herobanner2.png",
+  "/herobanner3.png",
+];
 
 const products = [
   {
@@ -161,7 +168,7 @@ function Logo({ footer = false }) {
     <a className={`brand ${footer ? "footer-brand" : ""}`} href="#home" aria-label="HMT MIDDLEEAST GENERAL TRADING LLC home">
       <img className="brand-logo-image" src="/hmt-logo.png" alt="HMT logo" />
       <span className="brand-text">
-        <strong>HMT MIDDLEEAST</strong>
+        <strong>HMT MIDDLE EAST</strong>
         <small>GENERAL TRADING LLC</small>
       </span>
     </a>
@@ -171,6 +178,14 @@ function Logo({ footer = false }) {
 function App() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % heroSlides.length);
+    }, 3000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   const filteredProducts = products.filter((product) => {
     const matchesCategory =
@@ -188,7 +203,7 @@ function App() {
   });
 
   const quoteMessage =
-    "Hello HMT MIDDLEEAST, I would like to enquire about your Bosch power tools, accessories and spare parts. Please share availability and pricing.";
+    "Hello HMT MIDDLE EAST GENERAL TRADING LLC, I would like to enquire about your Bosch power tools, accessories and spare parts. Please share availability and pricing.";
 
   return (
     <div className="website" id="home">
@@ -227,6 +242,17 @@ function App() {
       {/* HERO */}
 
       <section className="hero">
+  <div className="hero-slide-track" aria-hidden="true">
+    {heroSlides.map((image, index) => (
+      <div
+        key={image}
+        className={`hero-slide-background ${
+          index === activeSlide ? "active" : ""
+        }`}
+        style={{ backgroundImage: `url("${image}")` }}
+      />
+    ))}
+  </div>
         <div className="container hero-grid">
           <div className="hero-copy">
             <div className="eyebrow">
@@ -301,6 +327,21 @@ function App() {
           </div>
         </div>
 
+        <div className="hero-slideshow-controls" aria-label="Hero slideshow controls">
+          <button className="hero-slide-arrow" type="button" aria-label="Previous slide"
+            onClick={() => setActiveSlide((current) => (current - 1 + heroSlides.length) % heroSlides.length)}>‹</button>
+          <div className="hero-slide-dots">
+            {heroSlides.map((slide, index) => (
+              <button key={slide} type="button"
+                className={index === activeSlide ? "hero-slide-dot active" : "hero-slide-dot"}
+                aria-label={`Go to slide ${index + 1}`}
+                aria-current={index === activeSlide ? "true" : undefined}
+                onClick={() => setActiveSlide(index)} />
+            ))}
+          </div>
+          <button className="hero-slide-arrow" type="button" aria-label="Next slide"
+            onClick={() => setActiveSlide((current) => (current + 1) % heroSlides.length)}>›</button>
+        </div>
         <div className="hero-footer">
           <div className="container hero-footer-inner">
             <span>✓ Professional Product Enquiries</span>
@@ -463,7 +504,7 @@ function App() {
                     <a
                       className="product-enquire"
                       href={whatsappLink(
-                        `Hello HMT MIDDLEEAST, I would like to enquire about ${product.name} (${product.model}). Please share availability, pricing and specifications.`
+                        `Hello HMT MIDDLE EAST GENERAL TRADING LLC, I would like to enquire about ${product.name} (${product.model}). Please share availability, pricing and specifications.`
                       )}
                       target="_blank"
                       rel="noreferrer"
