@@ -1,0 +1,12 @@
+HMT WEBSITE PRODUCT IMAGE UPDATE
+
+Includes updated src/App.jsx and public/products image files extracted from the Bosch catalogues.
+
+HOW TO APPLY
+1. Back up your current src/App.jsx.
+2. Extract this ZIP into your existing hmt-middle-east project folder.
+3. Merge the public folder and replace src/App.jsx when prompted.
+4. Keep your existing src/App.css and index.html unchanged.
+5. Run npm.cmd run dev and refresh http://localhost:5173/
+
+NOTE: Images are used for matching power-tool categories. Accessory/spare-part cards retain their icon placeholders because the current extracted image set does not include those parts. Availability, exact models, specifications and pricing should be confirmed with HMT.
