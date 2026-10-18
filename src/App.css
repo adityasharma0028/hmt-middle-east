@@ -113,4 +113,210 @@
 .hero-slide-dots { display:flex; align-items:center; gap:9px; }
 .hero-slide-dot { width:9px; height:9px; padding:0; border:1px solid #fff; border-radius:50%; background:transparent; }
 .hero-slide-dot.active { background:#fff; transform:scale(1.2); }
-@media (max-width:760px) { .hero-slide-background { background-position:60% center; } .hero-grid { grid-template-columns:1fr; } }
+@media (max-width:760px) { .hero-slide-background { background-position:60% center; } .hero-grid { grid-template-columns:1fr; } }/* ===== PRODUCT CATALOGUE PAGE ===== */
+
+.products-page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  color: #172b40;
+  font-family: inherit;
+}
+
+.products-page-header {
+  padding: 50px 6% 35px;
+  background: #fff;
+}
+
+.catalogue-back-link {
+  display: inline-block;
+  margin-bottom: 35px;
+  color: #172b40;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.products-page-header .section-eyebrow {
+  color: #d92332;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.products-page-header h1 {
+  margin: 12px 0;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.15;
+}
+
+.products-page-header > p:not(.section-eyebrow) {
+  color: #64748b;
+  line-height: 1.7;
+}
+
+.catalogue-search {
+  width: min(100%, 520px);
+  box-sizing: border-box;
+  margin-top: 20px;
+  padding: 15px 18px;
+  border: 1px solid #dbe2ea;
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  outline-color: #d92332;
+}
+
+.catalogue-layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 35px;
+  padding: 40px 6%;
+}
+
+.catalogue-sidebar h2,
+.catalogue-results-heading h2 {
+  margin-top: 0;
+  font-size: 22px;
+}
+
+.catalogue-category {
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+  padding: 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #46576a;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+.catalogue-category:hover,
+.catalogue-category.active {
+  background: #172b40;
+  color: #fff;
+}
+
+.catalogue-results-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.catalogue-results-heading span {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.catalogue-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.catalogue-card {
+  overflow: hidden;
+  border: 1px solid #e7ebf0;
+  border-radius: 10px;
+  background: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.catalogue-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(23, 43, 64, 0.09);
+}
+
+.catalogue-card-image {
+  position: relative;
+  display: flex;
+  min-height: 190px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #eef2f6;
+}
+
+.catalogue-card-image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.catalogue-image-placeholder {
+  color: #8492a3;
+  font-size: 14px;
+}
+
+.catalogue-card-content {
+  padding: 20px;
+}
+
+.catalogue-card-category {
+  color: #d92332;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.catalogue-card-content h3 {
+  margin: 10px 0;
+  font-size: 19px;
+}
+
+.catalogue-card-content > p:not(.catalogue-card-category) {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.catalogue-view-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: #172b40;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.catalogue-view-link:hover {
+  color: #d92332;
+}
+
+.catalogue-empty {
+  padding: 35px 0;
+  color: #64748b;
+}
+
+@media (max-width: 1050px) {
+  .catalogue-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .products-page-header {
+    padding: 30px 5%;
+  }
+
+  .catalogue-layout {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 30px 5%;
+  }
+
+  .catalogue-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .catalogue-results-heading {
+    align-items: flex-start;
+  }
+}

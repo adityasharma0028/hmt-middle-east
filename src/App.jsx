@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import ProductsPage from "./Pages/ProductsPage.jsx";
+
 import "./App.css";
 
 const WHATSAPP_NUMBER = "971554383949";
@@ -206,6 +209,11 @@ function App() {
     "Hello HMT MIDDLE EAST GENERAL TRADING LLC, I would like to enquire about your Bosch power tools, accessories and spare parts. Please share availability and pricing.";
 
   return (
+    <Routes>
+      <Route path="/products" element={<ProductsPage />} />
+      <Route
+        path="/*"
+        element={(
     <div className="website" id="home">
       {/* HEADER */}
 
@@ -222,7 +230,7 @@ function App() {
 
           <nav className="main-nav">
             <a href="#home">Home</a>
-            <a href="#products">Products</a>
+            <Link to="/products">Products</Link>
             <a href="#ecosystem">Bosch Ecosystem</a>
             <a href="#about">About Us</a>
             <a href="#contact">Contact</a>
@@ -284,9 +292,9 @@ function App() {
                 <span>☏</span> Enquire on WhatsApp <span>→</span>
               </a>
 
-              <a className="button button-outline" href="#products">
+              <Link className="button button-outline" to="/products">
                 Explore Products <span>→</span>
-              </a>
+              </Link>
             </div>
 
             <div className="hero-note">
@@ -761,6 +769,9 @@ function App() {
         </div>
       </footer>
     </div>
+        )}
+      />
+    </Routes>
   );
 }
 
