@@ -110,6 +110,7 @@ export default function ProductsPage() {
               {filteredProducts.map((product) => (
                 <article className="catalogue-card" key={product.id}>
                   <div className="catalogue-card-image">
+                    <Link to={`/products/${encodeURIComponent(product.slug)}`} className="catalogue-image-link" aria-label={`View ${product.name} details`}>
                     <img
                       src={product.image_url || ''}
                       alt={product.name}
@@ -118,6 +119,7 @@ export default function ProductsPage() {
                         event.currentTarget.style.display = 'none'
                       }}
                     />
+                    </Link>
                     {!product.image_url && (
                       <span className="catalogue-image-placeholder">Product Image</span>
                     )}
@@ -128,7 +130,7 @@ export default function ProductsPage() {
                       {product.category}
                     </p>
 
-                    <h3>{product.name}</h3>
+                    <h3><Link to={`/products/${encodeURIComponent(product.slug)}`} className="product-name-link">{product.name}</Link></h3>
 
                     <p>{product.description || 'Contact us for product details and availability.'}</p>
 
@@ -140,6 +142,7 @@ export default function ProductsPage() {
                     >
                       Enquire on WhatsApp →
                     </a>
+                    <Link to={`/products/${encodeURIComponent(product.slug)}`} className="catalogue-view-link">View product details →</Link>
                   </div>
                 </article>
               ))}

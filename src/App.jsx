@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import ProductsPage from "./Pages/ProductsPage.jsx";
+import ProductDetailPage from "./Pages/ProductDetailPage.jsx";
 import AdminLogin from "./Pages/AdminLogin.jsx";
 import ResetPassword from "./Pages/ResetPassword.jsx";
 import AdminDashboard from "./Pages/AdminDashboard.jsx";
@@ -122,6 +123,7 @@ function App() {
   return (
     <Routes>
       <Route path="/products" element={<ProductsPage />} />
+      <Route path="/products/:slug" element={<ProductDetailPage />} />
       <Route path="/admin" element={<AdminLogin />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
@@ -394,6 +396,7 @@ function App() {
               )}
               {filteredProducts.map((product, index) => (
                 <article className="product-card" key={product.id}>
+                  <Link to={`/products/${encodeURIComponent(product.slug)}`} className="product-detail-card-link" aria-label={`View ${product.name} details`}>
                   <div className={`product-art product-art-${(index % 4) + 1}`}>
                     <span className="product-category">
                       {product.category}
@@ -426,10 +429,11 @@ function App() {
                       PRODUCT ENQUIRY
                     </span>
                   </div>
+                  </Link>
 
                   <div className="product-info">
                     <span className="product-model">{product.brand || "Product enquiry"}</span>
-                    <h3>{product.name}</h3>
+                    <h3><Link to={`/products/${encodeURIComponent(product.slug)}`} className="product-name-link">{product.name}</Link></h3>
                     <p>{product.description || "Contact us for product details and availability."}</p>
 
                     <a
