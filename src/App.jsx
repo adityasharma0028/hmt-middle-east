@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import ProductsPage from "./Pages/ProductsPage.jsx";
+import AdminLogin from "./Pages/AdminLogin.jsx";
+import ResetPassword from "./Pages/ResetPassword.jsx";
+import AdminDashboard from "./Pages/AdminDashboard.jsx";
+import { supabase } from "./lib/supabase.js";
+
 
 import "./App.css";
 
@@ -11,130 +16,6 @@ const heroSlides = [
   "/herobanner1.png",
   "/herobanner2.png",
   "/herobanner3.png",
-];
-
-const products = [
-  {
-    name: "Cordless Drill Drivers",
-    category: "Power Tools",
-    model: "GSR 185-LI",
-    icon: "🔩",
-    image: "/products/drill-driver-01.jpg",
-    description: "Professional cordless drilling and screwdriving tools.",
-  },
-  {
-    name: "Rotary Hammers",
-    category: "Power Tools",
-    model: "GBH 2-26 DRE",
-    icon: "🔨",
-    image: "/products/rotary-hammer-01.jpg",
-    description: "Drilling and hammering solutions for construction.",
-  },
-  {
-    name: "Angle Grinders",
-    category: "Power Tools",
-    model: "GWS 27-230 J",
-    icon: "⚙️",
-    image: "/products/angle-grinder-01.jpg",
-    description: "Professional cutting and grinding equipment.",
-  },
-  {
-    name: "Impact Wrenches",
-    category: "Power Tools",
-    model: "GDS 18V-400",
-    icon: "🔧",
-    description: "Powerful fastening solutions for demanding jobs.",
-  },
-  {
-    name: "Demolition Hammers",
-    category: "Power Tools",
-    model: "GSH 18V-5" ,
-    icon: "🔨",
-    image: "/products/demolition-hammer-01.jpg",
-    description: "Heavy-duty demolition tools for construction work.",
-  },
-  {
-    name: "Jigsaws",
-    category: "Power Tools",
-    model: "GST 750" ,
-    icon: "🪚",
-    image: "/products/jigsaw-01.jpg",
-    description: "Power saws for curved and detailed cutting tasks.",
-  },
-  {
-    name: "Circular Saws",
-    category: "Power Tools",
-    model: "GKS 140" ,
-    icon: "🪚",
-    image: "/products/circular-saw-01.jpg",
-    description: "Circular saws for straight cutting applications.",
-  },
-  {
-    name: "Orbital & Random Orbit Sanders",
-    category: "Power Tools",
-    model: "GEX 125 / GSS 140 A" ,
-    icon: "⚙️",
-    image: "/products/random-orbit-sander-01.jpg",
-    description: "Sanding tools for surface preparation and finishing.",
-  },
-  {
-    name: "Dust Extractors",
-    category: "Power Tools",
-    model: "GAS 18V-10 L" ,
-    icon: "🧹",
-    image: "/products/dust-extractor-01.jpg",
-    description: "Dust extraction equipment for workshop and jobsite use.",
-  },
-  {
-    name: "Heat Guns",
-    category: "Power Tools",
-    model: "GHG Series" ,
-    icon: "♨️",
-    image: "/products/heat-gun-01.jpg",
-    description: "Heat tools for a variety of professional applications.",
-  },
-  {
-    name: "Drill Bits",
-    category: "Accessories",
-    model: "Drilling Accessories",
-    icon: "🪛",
-    description: "Drilling accessories for a range of materials.",
-  },
-  {
-    name: "Cutting Discs",
-    category: "Accessories",
-    model: "Cutting & Grinding",
-    icon: "💿",
-    description: "Cutting and grinding accessories for professionals.",
-  },
-  {
-    name: "Replacement Switches",
-    category: "Spare Parts",
-    model: "Power Tool Parts",
-    icon: "🔌",
-    description: "Replacement components for compatible tools.",
-  },
-  {
-    name: "Carbon Brushes",
-    category: "Spare Parts",
-    model: "Motor Components",
-    icon: "🔋",
-    description: "Replacement carbon brushes for compatible equipment.",
-  },
-  {
-    name: "Anchors & Fasteners",
-    category: "Fixing Systems",
-    model: "Installation Solutions",
-    icon: "🔩",
-    description: "Fastening products for construction and installation.",
-  },
-  {
-    name: "Mounting Accessories",
-    category: "Fixing Systems",
-    model: "Fixing Components",
-    icon: "🧰",
-    description: "Components for mounting and installation projects.",
-  },
 ];
 
 const categories = [
@@ -182,6 +63,35 @@ function App() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [activeSlide, setActiveSlide] = useState(0);
+  const [products, setProducts] = useState([]);
+  const [productsLoading, setProductsLoading] = useState(true);
+  const [productsError, setProductsError] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadPublishedProducts() {
+      const { data, error } = await supabase
+        .from("products")
+        .select("id, name, slug, description, brand, category, image_url, is_active")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false });
+
+      if (cancelled) return;
+
+      if (error) {
+        setProductsError("Products are temporarily unavailable. Please contact us on WhatsApp.");
+      } else {
+        setProducts(data || []);
+      }
+      setProductsLoading(false);
+    }
+
+    loadPublishedProducts();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -199,7 +109,8 @@ function App() {
 
     const matchesSearch =
       product.name.toLowerCase().includes(search) ||
-      product.model.toLowerCase().includes(search) ||
+      (product.brand || "").toLowerCase().includes(search) ||
+      (product.slug || "").toLowerCase().includes(search) ||
       product.category.toLowerCase().includes(search);
 
     return matchesCategory && matchesSearch;
@@ -211,6 +122,10 @@ function App() {
   return (
     <Routes>
       <Route path="/products" element={<ProductsPage />} />
+      <Route path="/admin" element={<AdminLogin />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      
       <Route
         path="/*"
         element={(
@@ -469,17 +384,25 @@ function App() {
             </div>
 
             <div className="product-grid">
+              {productsLoading && <p className="no-results">Loading products...</p>}
+              {productsError && (
+                <div className="no-results" role="status">
+                  <h3>Products could not be loaded</h3>
+                  <p>{productsError}</p>
+                  <a href={whatsappLink(quoteMessage)} target="_blank" rel="noreferrer">Ask us on WhatsApp →</a>
+                </div>
+              )}
               {filteredProducts.map((product, index) => (
-                <article className="product-card" key={product.name}>
+                <article className="product-card" key={product.id}>
                   <div className={`product-art product-art-${(index % 4) + 1}`}>
                     <span className="product-category">
                       {product.category}
                     </span>
 
-                    {product.image ? (
+                    {product.image_url ? (
                       <img
                         className="product-photo"
-                        src={product.image}
+                        src={product.image_url}
                         alt={product.name}
                         loading="lazy"
                         style={{
@@ -495,7 +418,7 @@ function App() {
                       />
                     ) : (
                       <span className="product-icon">
-                        {product.icon}
+                        {product.category === "Accessories" ? "⚙️" : product.category === "Spare Parts" ? "🔧" : product.category === "Fixing Systems" ? "🔩" : "🛠️"}
                       </span>
                     )}
 
@@ -505,14 +428,14 @@ function App() {
                   </div>
 
                   <div className="product-info">
-                    <span className="product-model">{product.model}</span>
+                    <span className="product-model">{product.brand || "Product enquiry"}</span>
                     <h3>{product.name}</h3>
-                    <p>{product.description}</p>
+                    <p>{product.description || "Contact us for product details and availability."}</p>
 
                     <a
                       className="product-enquire"
                       href={whatsappLink(
-                        `Hello HMT MIDDLE EAST GENERAL TRADING LLC, I would like to enquire about ${product.name} (${product.model}). Please share availability, pricing and specifications.`
+                        `Hello HMT MIDDLE EAST GENERAL TRADING LLC, I would like to enquire about ${product.name}${product.brand ? ` (${product.brand})` : ""}. Please share availability, pricing and specifications.`
                       )}
                       target="_blank"
                       rel="noreferrer"
@@ -523,7 +446,7 @@ function App() {
                 </article>
               ))}
 
-              {filteredProducts.length === 0 && (
+              {!productsLoading && !productsError && filteredProducts.length === 0 && (
                 <div className="no-results">
                   <h3>No matching products found</h3>
                   <p>

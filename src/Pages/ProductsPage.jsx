@@ -1,65 +1,48 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { supabase } from '../lib/supabase.js'
 import { Link } from 'react-router-dom'
 import '../App.css'
-
-const products = [
-  {
-    id: 1,
-    name: 'Bosch Drill Bits',
-    category: 'Drilling Accessories',
-    description: 'Drill bits for drilling applications across suitable materials.',
-    image: '/products/drill-bits.png',
-  },
-  {
-    id: 2,
-    name: 'Bosch Screwdriver Bits',
-    category: 'Screwdriving Accessories',
-    description: 'Screwdriver bits for a range of fastening applications.',
-    image: '/products/screwdriver-bits.png',
-  },
-  {
-    id: 3,
-    name: 'Bosch Chisels',
-    category: 'Chiselling Accessories',
-    description: 'Chisels for compatible demolition and chiselling applications.',
-    image: '/products/chisels.png',
-  },
-  {
-    id: 4,
-    name: 'Bosch Cutting Discs',
-    category: 'Cutting and Grinding',
-    description: 'Cutting accessories for compatible power tools.',
-    image: '/products/cutting-discs.png',
-  },
-  {
-    id: 5,
-    name: 'Bosch Circular Saw Blades',
-    category: 'Sawing Accessories',
-    description: 'Circular saw blades for compatible saws and applications.',
-    image: '/products/circular-saw-blades.png',
-  },
-  {
-    id: 6,
-    name: 'Bosch Hole Saws',
-    category: 'Hole Saw Accessories',
-    description: 'Hole saw accessories for suitable drilling applications.',
-    image: '/products/hole-saws.png',
-  },
-]
-
-const categories = [
-  'All Products',
-  ...new Set(products.map((product) => product.category)),
-]
 
 export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [activeCategory, setActiveCategory] = useState('All Products')
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    let cancelled = false
+
+    async function loadPublishedProducts() {
+      const { data, error: queryError } = await supabase
+        .from('products')
+        .select('id, name, slug, description, brand, category, image_url, is_active')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
+
+      if (cancelled) return
+      if (queryError) setError('Products are temporarily unavailable. Please try again later.')
+      else setProducts(data || [])
+      setLoading(false)
+    }
+
+    loadPublishedProducts()
+    return () => { cancelled = true }
+  }, [])
+
+  const categories = useMemo(() => [
+    'All Products',
+    ...new Set(products.map((product) => product.category).filter(Boolean)),
+  ], [products])
 
   const filteredProducts = products.filter((product) => {
+    const search = searchTerm.toLowerCase()
     const matchesSearch =
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchTerm.toLowerCase())
+      product.name.toLowerCase().includes(search) ||
+      (product.brand || '').toLowerCase().includes(search) ||
+      (product.slug || '').toLowerCase().includes(search) ||
+      (product.description || '').toLowerCase().includes(search) ||
+      (product.category || '').toLowerCase().includes(search)
 
     const matchesCategory =
       activeCategory === 'All Products' ||
@@ -118,22 +101,26 @@ export default function ProductsPage() {
             <span>{filteredProducts.length} products</span>
           </div>
 
-          {filteredProducts.length > 0 ? (
+          {loading ? (
+            <p className="catalogue-empty" role="status">Loading products...</p>
+          ) : error ? (
+            <p className="catalogue-empty" role="alert">{error}</p>
+          ) : filteredProducts.length > 0 ? (
             <div className="catalogue-grid">
               {filteredProducts.map((product) => (
                 <article className="catalogue-card" key={product.id}>
                   <div className="catalogue-card-image">
                     <img
-                      src={product.image}
+                      src={product.image_url || ''}
                       alt={product.name}
                       loading="lazy"
                       onError={(event) => {
                         event.currentTarget.style.display = 'none'
                       }}
                     />
-                    <span className="catalogue-image-placeholder">
-                      Product Image
-                    </span>
+                    {!product.image_url && (
+                      <span className="catalogue-image-placeholder">Product Image</span>
+                    )}
                   </div>
 
                   <div className="catalogue-card-content">
@@ -143,14 +130,16 @@ export default function ProductsPage() {
 
                     <h3>{product.name}</h3>
 
-                    <p>{product.description}</p>
+                    <p>{product.description || 'Contact us for product details and availability.'}</p>
 
-                    <Link
-                      to={`/products/${product.id}`}
+                    <a
+                      href={`https://wa.me/971554383949?text=${encodeURIComponent(`Hello HMT MIDDLE EAST GENERAL TRADING LLC, I would like to enquire about ${product.name}${product.brand ? ` (${product.brand})` : ''}. Please share availability, pricing and specifications.`)}`}
                       className="catalogue-view-link"
+                      target="_blank"
+                      rel="noreferrer"
                     >
-                      View Product →
-                    </Link>
+                      Enquire on WhatsApp →
+                    </a>
                   </div>
                 </article>
               ))}

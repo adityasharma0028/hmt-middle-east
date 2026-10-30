@@ -320,3 +320,77 @@
     align-items: flex-start;
   }
 }
+/* Admin login */
+.admin-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #f4f6f8;
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 36px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.admin-login-card h1 {
+  margin: 0 0 8px;
+  font-size: 26px;
+}
+
+.admin-login-card > p {
+  margin-bottom: 28px;
+  color: #667085;
+}
+
+.admin-login-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-login-card label {
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.admin-login-card input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.admin-login-card button {
+  margin-top: 16px;
+  padding: 13px;
+  border: 0;
+  border-radius: 6px;
+  background: #176b45;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-login-card button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.admin-login-card > a {
+  display: inline-block;
+  margin-top: 24px;
+  color: #176b45;
+}
+
+.admin-error {
+  color: #b42318;
+  overflow-wrap: anywhere;
+}
