@@ -148,7 +148,6 @@ function App() {
           <nav className="main-nav">
             <a href="#home">Home</a>
             <Link to="/products">Products</Link>
-            <a href="#ecosystem">Bosch Ecosystem</a>
             <a href="#about">About Us</a>
             <a href="#contact">Contact</a>
           </nav>
@@ -531,21 +530,12 @@ function App() {
 
       <section className="about-section section-pad" id="about">
         <div className="container about-grid">
-          <div className="about-graphic">
-            <div className="about-graphic-top">
-              HMT MIDDLEEAST · DUBAI, UAE
-            </div>
-
-            <div className="about-big-type">
-              HMT
-              <br />
-              <span>SUPPLY.</span>
-            </div>
-
-            <div className="about-graphic-bottom">
-              <span>GENERAL TRADING LLC</span>
-              <span>ESTABLISHED BUSINESS</span>
-            </div>
+          <div className="about-shop-photo">
+            <img
+              className="about-shop-photo-image"
+              src="/images/hmt-shop-front.png"
+              alt="Bosch and HMT signage above the HMT Middle East family shop entrance"
+            />
           </div>
 
           <div className="about-copy">
@@ -554,10 +544,9 @@ function App() {
               About HMT MIDDLEEAST
             </div>
 
-            <h2>
-              Your Trading
-              <br />
-              <span>Partner in Dubai.</span>
+            <h2 className="about-company-heading">
+              <span>HMT MIDDLE EAST</span>
+              <span>GENERAL TRADING</span>
             </h2>
 
             <p>
@@ -599,7 +588,7 @@ function App() {
             </h2>
 
             <p>
-              Contact HMT MIDDLEEAST for product enquiries and quotations.
+              Contact HMT MIDDLE EAST GENERAL TRADING LLC for product enquiries and quotations.
             </p>
           </div>
 

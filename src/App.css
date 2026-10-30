@@ -99,6 +99,72 @@
   content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
   background: linear-gradient(90deg, rgba(6,20,34,.92) 0%, rgba(6,20,34,.78) 45%, rgba(6,20,34,.30) 100%);
 }
+
+/* Homepage header and About section updates */
+.brand-logo-image,
+.footer-brand .brand-logo-image { width: 108px; height: 88px; }
+.main-nav { gap: 30px; }
+.main-nav a { font-size: 15px; }
+.about-shop-photo {
+  min-height: 320px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid #dbe4eb;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #f3f6f8, #e6edf2);
+  color: #607384;
+}
+.about-shop-photo::before,
+.about-shop-photo::after {
+  content: "";
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  border: 1px solid #092b4510;
+  border-radius: 50%;
+}
+.about-shop-photo::after { width: 310px; height: 310px; }
+.about-shop-photo-placeholder {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+}
+.about-shop-photo-icon { font-size: 38px; line-height: 1; color: #8395a3; }
+.about-shop-photo-placeholder strong { color: var(--navy); font-size: 17px; }
+.about-shop-photo-placeholder > span:last-child { font-size: 13px; }
+.about-copy h2.about-company-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: clamp(30px, 3.2vw, 42px);
+}
+.about-company-heading span + span { color: var(--red); }
+@media (max-width: 1000px) {
+  .brand-logo-image, .footer-brand .brand-logo-image { width: 94px; height: 78px; }
+  .main-nav { gap: 18px; }
+  .main-nav a { font-size: 14px; }
+}
+@media (max-width: 760px) {
+  .brand-logo-image, .footer-brand .brand-logo-image { width: 68px; height: 60px; }
+  .main-nav { gap: 24px; }
+  .main-nav a { font-size: 14px; }
+  .about-shop-photo { min-height: 260px; }
+  .about-copy h2.about-company-heading { font-size: clamp(28px, 7vw, 36px); }
+}
+@media (max-width: 480px) {
+  .brand-logo-image, .footer-brand .brand-logo-image { width: 60px; height: 54px; }
+  .main-nav { justify-content: flex-start; gap: 22px; }
+  .main-nav a { font-size: 14px; }
+}
+@media (max-width: 350px) {
+  .brand-logo-image, .footer-brand .brand-logo-image { width: 50px; height: 48px; }
+}
 .hero-grid, .hero-footer, .hero-slideshow-controls { position: relative; z-index: 2; }
 .hero-copy { position: relative; z-index: 2; }
 .hero-visual { display: none; }
@@ -438,3 +504,8 @@
   .product-specification { grid-template-columns: 1fr; gap: 5px; }
   .product-detail-message { padding: 24px; }
 }
+
+.about-shop-photo { min-height: 0; aspect-ratio: 4 / 3; background: #e6edf2; }
+.about-shop-photo-image { display: block; width: 100%; height: 100%; min-height: 320px; object-fit: cover; object-position: center 56%; }
+@media (max-width: 760px) { .about-shop-photo-image { min-height: 260px; } }
+
